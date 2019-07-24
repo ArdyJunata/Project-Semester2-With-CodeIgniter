@@ -29,11 +29,12 @@
                                     <button type="submit" class="btn btn-primary btn-user btn-block">
                                         Login
                                     </button>
-                                    <div class="col-lg text-center">
-                                        <a href="<?= $url; ?>" class="btn btn-primary mt-2">Login with facebook</a>
-                                    </div>
+
                                 </form>
                                 <hr>
+                                <a href="<?= $url; ?>" class="btn btn-facebook btn-user btn-block">
+                                    <i class="fab fa-facebook fa-fw"></i> Login with Facebook
+                                </a>
                                 <div class="text-center">
                                     <a class="small" href="forgot-password.html">Forgot Password?</a>
                                 </div>
