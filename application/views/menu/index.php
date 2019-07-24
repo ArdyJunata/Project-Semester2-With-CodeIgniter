@@ -28,8 +28,10 @@
                             <th scope="row"><?= $i; ?></th>
                             <td><?= $m['menu']; ?></td>
                             <td>
-                                <a href="" class="badge badge-success">edit</a>
-                                <a href="" class="badge badge-danger">hapus</a>
+                                <?php
+                                $id = $m['id'];
+                                ?>
+                                <a href="<?= base_url('menu/deleteMenu/') . $id ?>" onclick="return confirm('You sure want to delete it ?')" class="badge badge-danger">hapus</a>
                             </td>
                         </tr>
                         <?php $i++; ?>

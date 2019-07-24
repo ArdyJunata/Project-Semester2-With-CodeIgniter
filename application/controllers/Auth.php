@@ -148,7 +148,7 @@ class Auth extends CI_Controller
                 'email' => htmlspecialchars($this->session->userdata('id')),
                 'image' => 'default.jpg',
                 'password' => 0,
-                'role_id' => 3,
+                'role_id' => 2,
                 'is_active' => 1,
                 'date_created' => time()
             ];

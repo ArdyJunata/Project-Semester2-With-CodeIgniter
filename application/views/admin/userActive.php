@@ -16,36 +16,34 @@
             <?= $this->session->flashdata('message'); ?>
 
 
-            <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newSubMenuModal">Add New Subenu</a>
+            <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newSubMenuModal">Add New User</a>
 
 
             <table class="table table-hover">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Title</th>
-                        <th scope="col">Menu</th>
-                        <th scope="col">Url</th>
-                        <th scope="col">icon</th>
-                        <th scope="col">Active</th>
+                        <th scope="col">Id</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">role_id</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php $i = 1; ?>
-                    <?php foreach ($subMenu as $sm) :  ?>
+                    <?php foreach ($menu as $m) :  ?>
                         <tr>
                             <th scope="row"><?= $i; ?></th>
-                            <td><?= $sm['title']; ?></td>
-                            <td><?= $sm['menu']; ?></td>
-                            <td><?= $sm['url']; ?></td>
-                            <td><?= $sm['icon']; ?></td>
-                            <td><?= $sm['is_active']; ?></td>
+                            <td><?= $m['id']; ?></td>
+                            <td><?= $m['name']; ?></td>
+                            <td><?= $m['email']; ?></td>
+                            <td><?= $m['role_id']; ?></td>
                             <?php
-                            $id = $sm['id'];
+                            $id = $m['id'];
                             ?>
                             <td>
-                                <a href="<?= base_url('menu/deleteSubMenu/') . $id ?>" onclick="return confirm('You sure want to delete it ?')" class="badge badge-danger">hapus</a>
+                                <a href="<?= base_url('admin/deleteUser/') . $id ?>" onclick="return confirm('You sure want to delete it ?')" class="badge badge-danger">hapus</a>
                             </td>
                         </tr>
                         <?php $i++; ?>
@@ -68,32 +66,24 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="<?= base_url('menu/submenu'); ?>" method="post">
+            <form action="<?= base_url('admin/addUser'); ?>" method="post">
                 <div class="modal-body">
                     <div class="form-group">
-                        <input type="text" class="form-control" id="title" name="title" placeholder="title">
+                        <input type="text" class="form-control" id="name" name="name" placeholder="name">
                     </div>
                     <div class="form-group">
-                        <select name="menu_id" id="menu_id" class="form-control">
+                        <input type="text" class="form-control" id="email" name="email" placeholder="email">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="password">
+                    </div>
+                    <div class="form-group">
+                        <select name="user_role" id="user_role" class="form-control">
                             <option value="">Select Menu</option>
-                            <?php foreach ($menu as $m) : ?>
-                                <option value="<?= $m['id'] ?>"><?= $m['menu'] ?></option>
+                            <?php foreach ($role as $r) : ?>
+                                <option value="<?= $r['id'] ?>"><?= $r['role'] ?></option>
                             <?php endforeach; ?>
                         </select>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="url" name="url" placeholder="url">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="icon" name="icon" placeholder="icon">
-                    </div>
-                    <div class="form-group">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="1" name="is_active" id="is_active" checked>
-                            <label class="form-check-label" for="is_activ">
-                                Active ?
-                            </label>
-                        </div>
                     </div>
                 </div>
 
