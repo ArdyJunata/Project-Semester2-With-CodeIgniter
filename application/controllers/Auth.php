@@ -132,9 +132,10 @@ class Auth extends CI_Controller
     {
         $user = $this->db->get_where('user', ['email' => $this->session->userdata('id')])->row_array();
         if ($user) {
-            $usercek = $this->db->get_where('user', ['name' => $this->session->userdata('name')])->row_array();
+            $usercek = $this->db->get_where('user', ['email' => $this->session->userdata('id')])->row_array();
             $data = [
                 'name' => $usercek['name'],
+                'email' => $usercek['email'],
                 'role_id' => $usercek['role_id']
             ];
             $this->session->set_userdata($data);
@@ -153,6 +154,5 @@ class Auth extends CI_Controller
             $this->db->insert('user', $data);
             redirect('user');
         }
-        echo "oke";
     }
 }
