@@ -29,6 +29,7 @@
                                     <button type="submit" class="btn btn-primary btn-user btn-block">
                                         Login
                                     </button>
+                                    <a href="<?= $url; ?>">Login with facebook</a>
                                 </form>
                                 <hr>
                                 <div class="text-center">
