@@ -8,8 +8,6 @@ class Auth extends CI_Controller
     {
         parent::__construct();
         $this->load->library('form_validation');
-        $this->load->library('facebooksdk');
-        $this->fb = $this->facebooksdk;
     }
 
     public function index()
@@ -19,11 +17,8 @@ class Auth extends CI_Controller
 
         if ($this->form_validation->run() == false) {
             $data['title'] = 'Login Page';
-            $cb = "http://localhost/CILogin/auth/callback";
-            $url = $this->fb->getLoginUrl($cb);
-            $datas = array('url' => $url);
             $this->load->view('templates/auth_header', $data);
-            $this->load->view('auth/login', $datas);
+            $this->load->view('auth/login');
             $this->load->view('templates/auth_footer');
         } else {
             //validasinya success
@@ -113,12 +108,5 @@ class Auth extends CI_Controller
     public function blocked()
     {
         $this->load->view('auth/blocked');
-    }
-
-    public function callback()
-    {
-        $act = $this->fb->getAccessToken();
-        $data = $this->fb->getUserData($act);
-        print("oke");
     }
 }
