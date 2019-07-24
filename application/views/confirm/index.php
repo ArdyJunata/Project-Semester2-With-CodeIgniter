@@ -12,8 +12,9 @@
                         <div class="col-lg">
                             <div class="p-5">
                                 <div class="text-center">
-                                    <h1 class="h4 text-gray-900 mb-4">Login Tyo</h1>
+                                    <h1 class="h4 text-gray-900 mb-4">Welcome <?= $name ?></h1>
                                 </div>
+                                <h3 class="h6 text-gray-900 mb-3">Before you can Access our website you must fill this form first</h3>
 
                                 <?= $this->session->flashdata('message') ?>
 
@@ -27,10 +28,9 @@
                                         <?= form_error('password', '<small class="text-danger pl-3">', '</small>') ?>
                                     </div>
                                     <button type="submit" class="btn btn-primary btn-user btn-block">
-                                        Login
+                                        Fill
                                     </button>
                                     <div class="col-lg text-center">
-                                        <a href="<?= $url; ?>" class="btn btn-primary mt-2">Login with facebook</a>
                                     </div>
                                 </form>
                                 <hr>

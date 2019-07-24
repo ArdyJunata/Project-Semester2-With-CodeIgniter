@@ -18,8 +18,8 @@ class Auth extends CI_Controller
         $this->form_validation->set_rules('password', 'Password', 'trim|required');
 
         if ($this->form_validation->run() == false) {
-            $data['title'] = 'Login Page';
-            $cb = "http://localhost/CILogin/auth/callback";
+            $data['title'] = 'Login';
+            $cb = "http://localhost/Cilogin/index.php/auth/callback";
             $url = $this->fb->getLoginUrl($cb);
             $datas = array('url' => $url);
             $this->load->view('templates/auth_header', $data);
@@ -118,7 +118,41 @@ class Auth extends CI_Controller
     public function callback()
     {
         $act = $this->fb->getAccessToken();
-        $data = $this->fb->getUserData($act);
-        print("oke");
+        $user = $this->fb->getUserData($act);
+        $nama = $user['name'] . " - Facebook";
+        $data = [
+            'name' => $nama,
+            'id' => $user['id']
+        ];
+        $this->session->set_userdata($data);
+        redirect('auth/regisfb');
+    }
+
+    public function regisfb()
+    {
+        $user = $this->db->get_where('user', ['email' => $this->session->userdata('id')])->row_array();
+        if ($user) {
+            $usercek = $this->db->get_where('user', ['name' => $this->session->userdata('name')])->row_array();
+            $data = [
+                'name' => $usercek['name'],
+                'role_id' => $usercek['role_id']
+            ];
+            $this->session->set_userdata($data);
+            redirect('user');
+        } else {
+            $data = [
+                'name' => htmlspecialchars($this->session->userdata('name')),
+                'email' => htmlspecialchars($this->session->userdata('id')),
+                'image' => 'default.jpg',
+                'password' => 0,
+                'role_id' => 2,
+                'is_active' => 1,
+                'date_created' => time()
+            ];
+            $this->session->set_userdata($data);
+            $this->db->insert('user', $data);
+            redirect('user');
+        }
+        echo "oke";
     }
 }
