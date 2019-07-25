@@ -26,7 +26,8 @@
                         <th scope="col">Id</th>
                         <th scope="col">Name</th>
                         <th scope="col">Email</th>
-                        <th scope="col">role_id</th>
+                        <th scope="col">Role_id</th>
+                        <th scope="col">Date Created</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
@@ -39,6 +40,7 @@
                             <td><?= $m['name']; ?></td>
                             <td><?= $m['email']; ?></td>
                             <td><?= $m['role_id']; ?></td>
+                            <td><?= date(' d F Y', $m['date_created']); ?></td>
                             <?php
                             $id = $m['id'];
                             ?>

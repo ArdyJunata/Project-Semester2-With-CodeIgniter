@@ -49,7 +49,7 @@ class Admin extends CI_Controller
             'name' => htmlspecialchars($this->input->post('name', true)),
             'email' => htmlspecialchars($this->input->post('email', true)),
             'image' => 'default.jpg',
-            'password' => password_hash($this->input->post('password1'), PASSWORD_DEFAULT),
+            'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
             'role_id' => htmlspecialchars($this->input->post('user_role', true)),
             'is_active' => 1,
             'date_created' => time()
