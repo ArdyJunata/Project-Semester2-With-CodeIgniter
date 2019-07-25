@@ -53,7 +53,7 @@ class Commerce extends CI_Controller
 
         $data['cart'] = $this->commerce->getCartAndItemsbyId($this->session->userdata('id'));
         
-        // $data = $this->commerce->getTotalPrice($this->session->userdata('id'));
+        $data['total'] = $this->commerce->getTotalPrice($this->session->userdata('id'));
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
