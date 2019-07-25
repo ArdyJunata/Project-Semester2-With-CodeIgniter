@@ -21,7 +21,7 @@
                     <div class="card-body">
                         <h6 class="card-title"><?= $c['name'] ?></h6>
                         <p class="card-text"><?= $rupiah = "Rp " . number_format($c['price'], 2, ',', '.');  ?></p>
-                        <a href="<?= base_url('user/cart') . $c['id'] ?>" class="btn btn-primary">Add to cart</a>
+                        <a href="<?= base_url('commerce/addCart/') . $t['id'] ?>" class="btn btn-primary">Add to cart</a>
                     </div>
                 </div>
             </div>

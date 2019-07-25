@@ -47,6 +47,7 @@ class Auth extends CI_Controller
                 // cek password
                 if (password_verify($password, $user['password'])) {
                     $data = [
+                        'id' => $user['id'],
                         'email' => $user['email'],
                         'role_id' => $user['role_id']
                     ];
@@ -142,6 +143,7 @@ class Auth extends CI_Controller
         if ($user) {
             $usercek = $this->db->get_where('user', ['email' => $this->session->userdata('id')])->row_array();
             $data = [
+                'id' => $usercek['id'],
                 'name' => $usercek['name'],
                 'email' => $usercek['email'],
                 'role_id' => $usercek['role_id']
