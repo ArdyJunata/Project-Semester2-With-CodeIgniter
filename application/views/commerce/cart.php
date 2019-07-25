@@ -34,7 +34,7 @@
                 <tr>
                     <td><a href="#" class="btn-sm btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
                     <td colspan="3" class="hidden-xs"></td>
-                    <td class="hidden-xs text-center"><strong><?= $rupiah = "Rp " . number_format($c['total'], 2, ',', '.');  ?></strong></td>
+                    <td class="hidden-xs text-center"><strong>belum dapat caranya</strong></td>
                     <td><a href="#" class="btn-sm btn-success">Checkout <i class=" fa fa-angle-right"></i></a></td>
                 </tr>
             </table>
