@@ -30,7 +30,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="<?= base_url('commerce/cart'); ?>">
                         <i class="fas fa-fw fa-shopping-cart"></i>
-                        <span class="mr-2 d-none d-lg-inline text-gray-600 small"> Cart</span>
+                        <span class="badge badge-primary"><?= $countCart['jumlah']; ?></span>
                     </a>
                 </li>
                 </li>

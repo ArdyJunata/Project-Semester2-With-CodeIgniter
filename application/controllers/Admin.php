@@ -14,7 +14,8 @@ class Admin extends CI_Controller
         $data['title'] = 'Dashboard';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
-
+        $this->load->model('Commerce_model', 'commerce');
+        $data['countCart'] = $this->commerce->countCart($this->session->userdata('id'));
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/topbar', $data);
@@ -26,7 +27,8 @@ class Admin extends CI_Controller
     {
         $data['title'] = 'Dashboard';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-
+        $this->load->model('Commerce_model', 'commerce');
+        $data['countCart'] = $this->commerce->countCart($this->session->userdata('id'));
         $data['menu'] = $this->db->get('user')->result_array();
         $data['role'] = $this->db->get('user_role')->result_array();
         $this->load->view('templates/header', $data);

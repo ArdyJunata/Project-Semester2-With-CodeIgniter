@@ -14,7 +14,8 @@ class Menu extends CI_Controller
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         $data['menu'] = $this->db->get('user_menu')->result_array();
-
+        $this->load->model('Commerce_model', 'commerce');
+        $data['countCart'] = $this->commerce->countCart($this->session->userdata('id'));
         $this->form_validation->set_rules('menu', 'Menu', 'required');
 
         if ($this->form_validation->run() == false) {
@@ -36,7 +37,8 @@ class Menu extends CI_Controller
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         $this->load->model('Menu_model', 'menu');
-
+        $this->load->model('Commerce_model', 'commerce');
+        $data['countCart'] = $this->commerce->countCart($this->session->userdata('id'));
         $data['subMenu'] = $this->menu->getSubMenu();
         $data['menu'] = $this->db->get('user_menu')->result_array();
 

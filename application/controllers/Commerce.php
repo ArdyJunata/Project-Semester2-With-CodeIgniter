@@ -16,7 +16,8 @@ class Commerce extends CI_Controller
 
         $data['items'] = $this->db->get('items')->result_array();
         $data['categories'] = $this->db->get('categories')->result_array();
-
+        $this->load->model('Commerce_model', 'commerce');
+        $data['countCart'] = $this->commerce->countCart($this->session->userdata('id'));
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/topbar', $data);
@@ -33,7 +34,7 @@ class Commerce extends CI_Controller
         $data['categories'] = $this->db->get('categories')->result_array();
 
         $this->load->model('Commerce_model', 'commerce');
-
+        $data['countCart'] = $this->commerce->countCart($this->session->userdata('id'));
         $data['category'] = $this->commerce->getCategoryById($id);
 
         $this->load->view('templates/header', $data);
@@ -49,12 +50,13 @@ class Commerce extends CI_Controller
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         $data['items'] = $this->db->get('items')->result_array();
+
         $this->load->model('Commerce_model', 'commerce');
 
         $data['cart'] = $this->commerce->getCartAndItemsbyId($this->session->userdata('id'));
 
         $data['total_cart'] = $this->commerce->getTotalPrice($this->session->userdata('id'));
-
+        $data['countCart'] = $this->commerce->countCart($this->session->userdata('id'));
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);

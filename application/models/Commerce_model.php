@@ -36,4 +36,11 @@ class Commerce_model extends CI_Model
         $row = $query->num_rows();
         return $row;
     }
+
+    public function countCart($id)
+    {
+        $query = $this->db->query("SELECT count(*) as jumlah from `cart` where `user_id` = $id");
+        $row = $query->row_array();
+        return $row;
+    }
 }
