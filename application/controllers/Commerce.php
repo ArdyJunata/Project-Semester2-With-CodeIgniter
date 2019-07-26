@@ -53,7 +53,11 @@ class Commerce extends CI_Controller
 
         $data['cart'] = $this->commerce->getCartAndItemsbyId($this->session->userdata('id'));
 
-        $data['total'] = $this->commerce->getTotalPrice($this->session->userdata('id'));
+        if (!$this->commerce->getTotalPrice($this->session->userdata('id'))) {
+            $data['total'] = $this->commerce->getTotalPrice($this->session->userdata('id'));
+        } else {
+            $data['total'] = 0;
+        }
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
@@ -81,6 +85,26 @@ class Commerce extends CI_Controller
 
             $this->db->insert('cart', $data);
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">add new cart success</div>');
+            redirect('commerce/cart');
+        }
+    }
+
+    public function deleteCart($id)
+    {
+        $this->db->delete('cart', array('id' => $id));
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">delete cart success</div>');
+        redirect('commerce/cart');
+    }
+
+    public function updateCart($id)
+    {
+        if ($this->input->post('quantity', true) == 0) {
+            $this->deleteCart($id);
+        } else {
+            $this->db->set('quantity', $this->input->post('quantity', true));
+            $this->db->where('id', $id);
+            $this->db->update('cart');
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">update cart success</div>');
             redirect('commerce/cart');
         }
     }

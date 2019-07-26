@@ -13,7 +13,7 @@ class Commerce_model extends CI_Model
 
     public function getCartAndItemsbyId($id)
     {
-        $query = "SELECT *, cart.quantity as q from cart, items where cart.item_id = items.id and cart.user_id = $id";
+        $query = "SELECT *, cart.id as id_cart, cart.quantity as q from cart, items where cart.item_id = items.id and cart.user_id = $id";
         return $this->db->query($query)->result_array();
     }
 

@@ -10,8 +10,8 @@
                 <tr>
                     <th>#</th>
                     <th>Product</th>
-                    <th>Quantity</th>
                     <th>Price</th>
+                    <th>Quantity</th>
                     <th class="text-center">Subtotal</th>
                     <th>Action</th>
                 </tr>
@@ -21,12 +21,20 @@
                         <td><?= $c['name']; ?></td>
                         <td><?= $rupiah = "Rp " . number_format($c['price'], 2, ',', '.');  ?></td>
                         <td width="6%">
-                            <input type="number" class="form-control" value="<?= $c['q']; ?>">
+                            <form action="<?= base_url('commerce/updateCart/') . $c['id_cart']; ?>" method="post">
+                                <input type="number" name="quantity" id="quantity" class="form-control" value="<?= $c['q']; ?>">
                         </td>
-                        <td class="text-center"><?= $rupiah = "Rp " . number_format($c['total_price'], 2, ',', '.');  ?></td>
+                        <td class="text-center">
+                            <?php
+                            $total = $c['total_price'] * $c['q'];
+                            $rupiah = "Rp " . number_format($total, 2, ',', '.');
+                            echo ($rupiah);
+                            ?>
+                        </td>
                         <td class="actions">
-                            <button class="btn btn-info btn-sm"><i class="fas fa-sync-alt"></i></button>
-                            <button class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
+                            <button type="submit" class="btn btn-info btn-sm" href=""><i class="fas fa-sync-alt"></i></button>
+                            </form>
+                            <a class="btn btn-danger btn-sm" href="<?= base_url('commerce/deleteCart/') . $c['id_cart']; ?>"><i class="fas fa-trash-alt"></i></a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -34,7 +42,7 @@
                 <tr>
                     <td><a href="#" class="btn-sm btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
                     <td colspan="3" class="hidden-xs"></td>
-                    <td class="hidden-xs text-center"><strong><?= $rupiah = "Rp " . number_format($total['total_price'], 2, ',', '.'); ?></strong></td>
+                    <td class="hidden-xs text-center"><strong><?= $rupiah = "Rp " . number_format($total, 2, ',', '.'); ?></strong></td>
                     <td><a href="#" class="btn-sm btn-success">Checkout <i class=" fa fa-angle-right"></i></a></td>
                 </tr>
             </table>
