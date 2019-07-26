@@ -17,17 +17,17 @@
                 </tr>
                 <?php foreach ($cart as $c) : ?>
                     <tr>
-                        <td><img height="100" width="100" src="<?= base_url('assets/img/products/') . $c['image'] ?>" alt="..." class="img-responsive" /></td>
+                        <td><img height="100" width="100" src="<?= base_url('assets/img/products/') . $c['image']; ?>" alt="..." class="img-responsive" /></td>
                         <td><?= $c['name']; ?></td>
                         <td><?= $rupiah = "Rp " . number_format($c['price'], 2, ',', '.');  ?></td>
                         <td width="6%">
                             <form action="<?= base_url('commerce/updateCart/') . $c['id_cart']; ?>" method="post">
                                 <input type="number" name="quantity" id="quantity" class="form-control" value="<?= $c['q']; ?>">
+                                <input type="hidden" name="price" id="price" value="<?= $c['price']; ?>">
                         </td>
                         <td class="text-center">
                             <?php
-                            $total = $c['total_price'] * $c['q'];
-                            $rupiah = "Rp " . number_format($total, 2, ',', '.');
+                            $rupiah = "Rp " . number_format($c['total_price'], 2, ',', '.');
                             echo ($rupiah);
                             ?>
                         </td>
@@ -42,7 +42,7 @@
                 <tr>
                     <td><a href="#" class="btn-sm btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
                     <td colspan="3" class="hidden-xs"></td>
-                    <td class="hidden-xs text-center"><strong><?= $rupiah = "Rp " . number_format($total, 2, ',', '.'); ?></strong></td>
+                    <td class="hidden-xs text-center"><strong><?= $rupiah = "Rp " . number_format($total_cart['total_price'], 2, ',', '.'); ?></strong></td>
                     <td><a href="#" class="btn-sm btn-success">Checkout <i class=" fa fa-angle-right"></i></a></td>
                 </tr>
             </table>

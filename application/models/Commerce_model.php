@@ -13,8 +13,14 @@ class Commerce_model extends CI_Model
 
     public function getCartAndItemsbyId($id)
     {
-        $query = "SELECT *, cart.id as id_cart, cart.quantity as q from cart, items where cart.item_id = items.id and cart.user_id = $id";
+        $query = "SELECT *,(items.price*cart.quantity) as total_harga, items.price as price, cart.id as id_cart, cart.quantity as q from cart, items where cart.item_id = items.id and cart.user_id = $id";
         return $this->db->query($query)->result_array();
+    }
+
+    public function getSumCart($id)
+    {
+        $query = "SELECT *,(items.price*cart.quantity) as total_harga, items.price as price, cart.id as id_cart, cart.quantity as q from cart, items where cart.item_id = items.id and cart.id = $id";
+        return $this->db->query($query)->row_array();
     }
 
     public function getTotalPrice($id)

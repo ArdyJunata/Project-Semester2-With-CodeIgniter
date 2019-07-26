@@ -53,11 +53,8 @@ class Commerce extends CI_Controller
 
         $data['cart'] = $this->commerce->getCartAndItemsbyId($this->session->userdata('id'));
 
-        if (!$this->commerce->getTotalPrice($this->session->userdata('id'))) {
-            $data['total'] = $this->commerce->getTotalPrice($this->session->userdata('id'));
-        } else {
-            $data['total'] = 0;
-        }
+        $data['total_cart'] = $this->commerce->getTotalPrice($this->session->userdata('id'));
+
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
@@ -98,10 +95,13 @@ class Commerce extends CI_Controller
 
     public function updateCart($id)
     {
+        $this->load->model('Commerce_model', 'commerce');
         if ($this->input->post('quantity', true) == 0) {
             $this->deleteCart($id);
         } else {
+            $total = ($this->input->post('quantity', true) * $this->input->post('price', true));
             $this->db->set('quantity', $this->input->post('quantity', true));
+            $this->db->set('total_price', $total);
             $this->db->where('id', $id);
             $this->db->update('cart');
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">update cart success</div>');
