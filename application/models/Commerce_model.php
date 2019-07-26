@@ -23,4 +23,11 @@ class Commerce_model extends CI_Model
         $row = $query->row_array();
         return $row;
     }
+
+    public function checkDuplicateCart($id, $user_id)
+    {
+        $query = $this->db->query("SELECT * from `cart` where `user_id` = $user_id and `item_id` = $id");
+        $row = $query->num_rows();
+        return $row;
+    }
 }

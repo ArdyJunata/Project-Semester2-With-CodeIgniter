@@ -52,7 +52,7 @@ class Commerce extends CI_Controller
         $this->load->model('Commerce_model', 'commerce');
 
         $data['cart'] = $this->commerce->getCartAndItemsbyId($this->session->userdata('id'));
-        
+
         $data['total'] = $this->commerce->getTotalPrice($this->session->userdata('id'));
 
         $this->load->view('templates/header', $data);
@@ -65,17 +65,23 @@ class Commerce extends CI_Controller
     public function addCart($id)
     {
         //get item by id
+        $user_id = $this->session->userdata('id');
         $data['item'] = $this->db->get_where('items', ['id' => $id])->row_array();
+        $this->load->model('Commerce_model', 'commerce');
+        if (($this->commerce->checkDuplicateCart($id, $user_id)) > 0) {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">The items has been in the cart!</div>');
+            redirect('commerce/cart');
+        } else {
+            $data = [
+                'quantity' => 1,
+                'total_price' => $data['item']['price'],
+                'item_id' => $id,
+                'user_id' => $this->session->userdata('id')
+            ];
 
-        $data = [
-            'quantity' => 1,
-            'total_price' => $data['item']['price'],
-            'item_id' => $id,
-            'user_id' => $this->session->userdata('id')
-        ];
-
-        $this->db->insert('cart', $data);
-        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">add new cart success</div>');
-        redirect('commerce/cart');
+            $this->db->insert('cart', $data);
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">add new cart success</div>');
+            redirect('commerce/cart');
+        }
     }
 }
