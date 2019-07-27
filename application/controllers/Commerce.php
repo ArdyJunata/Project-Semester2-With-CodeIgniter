@@ -9,6 +9,7 @@ class Commerce extends CI_Controller
         is_logged_in();
     }
 
+    // ITEM
     public function index()
     {
         $data['title'] = 'Items';
@@ -43,7 +44,9 @@ class Commerce extends CI_Controller
         $this->load->view('commerce/category.php', $data);
         $this->load->view('templates/footer');
     }
+    // END ITEM
 
+    // CART
     public function cart()
     {
         $data['title'] = 'Cart';
@@ -110,7 +113,9 @@ class Commerce extends CI_Controller
             redirect('commerce/cart');
         }
     }
+    // END CART
 
+    // WISHLIST
     public function wishlist()
     {
         $data['title'] = 'Wishlist';
@@ -142,7 +147,6 @@ class Commerce extends CI_Controller
                 'item_id' => $id,
                 'user_id' => $this->session->userdata('id')
             ];
-
             $this->db->insert('wishlist', $data);
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">add new wishlist success</div>');
             redirect('commerce');
@@ -154,5 +158,85 @@ class Commerce extends CI_Controller
         $this->db->delete('wishlist', array('id' => $id));
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">delete cart success</div>');
         redirect('commerce/wishlist');
+    }
+    //END WISHLIST
+
+    //SELL
+    public function sell()
+    {
+        $data['title'] = 'Sell';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['items'] = $this->db->get('items')->result_array();
+        $data['category'] = $this->db->get('categories')->result_array();
+
+        $this->load->model('Commerce_model', 'commerce');
+        $data['countCart'] = $this->commerce->countCart($this->session->userdata('id'));
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('commerce/sell.php', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function addItems()
+    {
+        //cek jika ada gambar yang diubah//
+        $upload_image = $_FILES['image']['name'];
+
+        if ($upload_image) {
+            $config['allowed_types'] = 'gif|jpg|png';
+            $config['upload_path'] = './assets/img/products/';
+
+            $this->load->library('upload', $config);
+
+            if ($this->upload->do_upload('image')) {
+                $new_image = $this->upload->data('file_name');
+                $data = [
+                    'name' => $this->input->post('name'),
+                    'price' => $this->input->post('price'),
+                    'quantity' => $this->input->post('quantity'),
+                    'category_id' => $this->input->post('category_id'),
+                    'user_id' => $this->session->userdata('id'),
+                    'image' => $new_image,
+                    'date_upload' => time()
+                ];
+                $this->db->insert('items', $data);
+                $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">add new item success</div>');
+                redirect('commerce');
+            } else {
+                echo $this->upload->display_errors();
+            }
+        } else {
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">field cannot be null</div>');
+            redirect('commerce/sell');
+        }
+    }
+    // END SELL
+
+    // MY ITEMS
+    public function userItems()
+    {
+        $data['title'] = 'My Items';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $data['items'] = $this->db->get('items')->result_array();
+
+        $this->load->model('Commerce_model', 'commerce');
+        $data['countCart'] = $this->commerce->countCart($this->session->userdata('id'));
+        $data['userItems'] = $this->commerce->getItemsByUserId($this->session->userdata('id'));
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('commerce/userItems.php', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function deleteItems($id)
+    {
+        $this->db->delete('items', array('id' => $id));
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">delete items success</div>');
+        redirect('commerce/userItems');
     }
 }

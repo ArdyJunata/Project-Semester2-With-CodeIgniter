@@ -56,4 +56,10 @@ class Commerce_model extends CI_Model
         $row = $query->num_rows();
         return $row;
     }
+
+    public function getItemsByUserId($id)
+    {
+        $query = "SELECT * FROM items WHERE user_id = $id";
+        return $this->db->query($query)->result_array();
+    }
 }
