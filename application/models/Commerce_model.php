@@ -4,10 +4,16 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Commerce_model extends CI_Model
 {
-    public function getCategoryById($id)
+    public function getCategoryById($id, $user_id)
     {
         $query = "SELECT `items`.`quantity` `quantity`, `items`.`id` `id`, `items`.`name` `name`, `items`.`price` `price`,                          `items`.`image` `image` FROM `items`, `categories`
-                    WHERE `categories`.`id` = `items`.`category_id` and `categories`.`id` = $id";
+                    WHERE `categories`.`id` = `items`.`category_id` and `categories`.`id` = $id and items.user_id <> $user_id";
+        return $this->db->query($query)->result_array();
+    }
+
+    public function getItemsByNotSeller($id)
+    {
+        $query = "SELECT * FROM items WHERE user_id <> $id";
         return $this->db->query($query)->result_array();
     }
 

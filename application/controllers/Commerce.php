@@ -14,11 +14,13 @@ class Commerce extends CI_Controller
     {
         $data['title'] = 'Items';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $id_user = $this->session->userdata('id');
 
-        $data['items'] = $this->db->get('items')->result_array();
+
         $data['categories'] = $this->db->get('categories')->result_array();
         $this->load->model('Commerce_model', 'commerce');
         $data['countCart'] = $this->commerce->countCart($this->session->userdata('id'));
+        $data['items'] = $this->commerce->getItemsByNotSeller($this->session->userdata('id'));
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/topbar', $data);
@@ -31,12 +33,12 @@ class Commerce extends CI_Controller
         $data['title'] = 'Items';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
-        $data['items'] = $this->db->get('items')->result_array();
+
         $data['categories'] = $this->db->get('categories')->result_array();
 
         $this->load->model('Commerce_model', 'commerce');
         $data['countCart'] = $this->commerce->countCart($this->session->userdata('id'));
-        $data['category'] = $this->commerce->getCategoryById($id);
+        $data['category'] = $this->commerce->getCategoryById($id, $this->session->userdata('id'));
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
