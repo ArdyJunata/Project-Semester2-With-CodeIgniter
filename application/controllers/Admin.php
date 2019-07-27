@@ -25,7 +25,7 @@ class Admin extends CI_Controller
 
     public function userActive()
     {
-        $data['title'] = 'Dashboard';
+        $data['title'] = 'User Acive';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $this->load->model('Commerce_model', 'commerce');
         $data['countCart'] = $this->commerce->countCart($this->session->userdata('id'));

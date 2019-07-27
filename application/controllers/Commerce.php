@@ -110,4 +110,49 @@ class Commerce extends CI_Controller
             redirect('commerce/cart');
         }
     }
+
+    public function wishlist()
+    {
+        $data['title'] = 'Wishlist';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $data['items'] = $this->db->get('items')->result_array();
+
+        $this->load->model('Commerce_model', 'commerce');
+        $data['countCart'] = $this->commerce->countCart($this->session->userdata('id'));
+        $data['wishlist'] = $this->commerce->getWishlistById($this->session->userdata('id'));
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('commerce/wishlist.php', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function addWishlist($id)
+    {
+        //get item by id
+        $user_id = $this->session->userdata('id');
+        $this->load->model('Commerce_model', 'commerce');
+        if (($this->commerce->checkDuplicateWishlist($id, $user_id)) > 0) {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">The items has been in the wishlist!</div>');
+            redirect('commerce/wishlist');
+        } else {
+            $data = [
+                'item_id' => $id,
+                'user_id' => $this->session->userdata('id')
+            ];
+
+            $this->db->insert('wishlist', $data);
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">add new wishlist success</div>');
+            redirect('commerce');
+        }
+    }
+
+    public function deleteWishlist($id)
+    {
+        $this->db->delete('wishlist', array('id' => $id));
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">delete cart success</div>');
+        redirect('commerce/wishlist');
+    }
 }

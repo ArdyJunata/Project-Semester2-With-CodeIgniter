@@ -16,14 +16,15 @@
         </div>
         <?php foreach ($category as $c) :  ?>
             <div class="col-sm-3 mt-3">
-                <div class="card" style="width: 15rem;">
+                <div class="card" style="width: 17rem;">
                     <img height="300" width="300" src="<?= base_url('assets/img/products/') . $c['image'] ?>" class="card-img-top" alt="...">
                     <div class="card-body">
                         <h6 class="card-title"><?= $c['name'] ?></h6>
                         <p class="card-text"><?= $rupiah = "Rp " . number_format($c['price'], 2, ',', '.');  ?></p>
                         <p class="card-text"><i class="fas fa-layer-group"></i> Stock <?= $c['quantity'] ?></p>
-                        <a href="" class="btn-sm btn-warning mb-2"><i class="fas fa-info-circle"></i> Detail</a>
-                        <a href="<?= base_url('commerce/addCart/') . $c['id'] ?>" class="btn-sm btn-primary"><i class="fas fa-fw fa-shopping-cart"></i> Add to cart</a>
+                        <a href="" class="btn-sm btn-dark mb-2"><i class="far fa-heart"></i></a>
+                        <a href="" class="btn-sm btn-dark mb-2"><i class="fas fa-info-circle"></i> Detail</a>
+                        <a href="<?= base_url('commerce/addCart/') . $c['id'] ?>" class="btn-sm btn-dark"><i class="fas fa-fw fa-shopping-cart"></i> Add to cart</a>
                     </div>
                 </div>
             </div>

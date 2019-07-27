@@ -43,4 +43,17 @@ class Commerce_model extends CI_Model
         $row = $query->row_array();
         return $row;
     }
+
+    public function getWishlistById($id)
+    {
+        $query = "SELECT *,w.id as id_w, i.id as id_item, i.name as name, i.price as price, i.image as image FROM wishlist w, items i WHERE w.item_id = i.id AND w.user_id = $id";
+        return $this->db->query($query)->result_array();
+    }
+
+    public function checkDuplicateWishlist($id, $user_id)
+    {
+        $query = $this->db->query("SELECT * from `wishlist` where `user_id` = $user_id and `item_id` = $id");
+        $row = $query->num_rows();
+        return $row;
+    }
 }
