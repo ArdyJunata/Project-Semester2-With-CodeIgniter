@@ -12,7 +12,7 @@ class Commerce extends CI_Controller
     // ITEM
     public function index()
     {
-        $data['title'] = 'Items';
+        $data['title'] = 'Buy Product';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $id_user = $this->session->userdata('id');
 
@@ -30,7 +30,11 @@ class Commerce extends CI_Controller
 
     public function category($id)
     {
-        $data['title'] = 'Items';
+        if ($id == 1) {
+            $data['title'] = 'Model Kit';
+        } else {
+            $data['title'] = 'Gundam';
+        }
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
 
@@ -166,7 +170,7 @@ class Commerce extends CI_Controller
     //SELL
     public function sell()
     {
-        $data['title'] = 'Sell';
+        $data['title'] = 'Sell Product';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $data['items'] = $this->db->get('items')->result_array();
         $data['category'] = $this->db->get('categories')->result_array();
@@ -219,7 +223,7 @@ class Commerce extends CI_Controller
     // MY ITEMS
     public function userItems()
     {
-        $data['title'] = 'My Items';
+        $data['title'] = 'My Products';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         $data['items'] = $this->db->get('items')->result_array();
@@ -240,5 +244,26 @@ class Commerce extends CI_Controller
         $this->db->delete('items', array('id' => $id));
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">delete items success</div>');
         redirect('commerce/userItems');
+    }
+    // END MY ITEMS
+
+    // CONFIRM
+    public function checkout()
+    {
+        $data['title'] = 'Checkout Orders';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $this->load->model('Commerce_model', 'commerce');
+
+        $data['cart'] = $this->commerce->getCartAndItemsbyId($this->session->userdata('id'));
+
+        $data['total_cart'] = $this->commerce->getTotalPrice($this->session->userdata('id'));
+        $data['countCart'] = $this->commerce->countCart($this->session->userdata('id'));
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('commerce/checkout.php', $data);
+        $this->load->view('templates/footer');
     }
 }

@@ -9,7 +9,7 @@
         <div class="col-sm-3">
             <ul class="list-group">
                 <li class="list-group-item active">Categories</li>
-                <a href="<?= base_url('commerce') ?>" class="list-group-item list-group-item-action">All Items</a>
+                <a href="<?= base_url('commerce') ?>" class="list-group-item list-group-item-dark list-group-item-action">All Items</a>
                 <?php foreach ($categories as $c) : ?>
                     <a href="<?= base_url('commerce/category/') . $c['id'] ?>" class="list-group-item list-group-item-action"><?= $c['name'] ?></a>
                 <?php endforeach; ?>
