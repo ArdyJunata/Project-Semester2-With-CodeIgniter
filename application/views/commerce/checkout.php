@@ -54,9 +54,29 @@
             </div>
         </div>
     </section>
-
     <!--================End Order Details Area =================-->
-
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-5">
+            <form action="<?= base_url('commerce/payment') ?>" method="post">
+                <div class="form-group row">
+                    <label for="name" class="col-sm-3 col-form-label">Payment Method</label>
+                    <div class="col-sm-7">
+                        <select name="payment" id="payment" class="form-control">
+                            <option value="">Select Payment</option>
+                            <?php foreach ($payment as $p) : ?>
+                                <option value="<?= $p['payment_id']; ?>"><?= $p['name']; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-10">
+                    <a href="<?= base_url('commerce/cart') ?>" class="btn btn-danger"><i class=" fa fa-angle-left"></i> Cancel</a>
+                    <button type="submit" class="btn btn-primary">Processed To Payment</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
 </div>
 <!-- /.container-fluid -->
