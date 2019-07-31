@@ -70,7 +70,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-sm-10">
+                <div class="col-sm-10 mb-2">
                     <a href="<?= base_url('commerce/cart') ?>" class="btn btn-danger"><i class=" fa fa-angle-left"></i> Cancel</a>
                     <button type="submit" class="btn btn-primary">Processed To Payment</button>
                 </div>

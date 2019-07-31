@@ -68,4 +68,30 @@ class User extends CI_Controller
             redirect('user');
         }
     }
+
+    public function editLocation()
+    {
+        $this->form_validation->set_rules('country', 'country', 'required|trim');
+        $this->form_validation->set_rules('address1', 'address1', 'required|trim');
+        $this->form_validation->set_rules('address2', 'address2', 'required|trim');
+        $this->form_validation->set_rules('postal', 'postal', 'required|trim');
+
+        if ($this->form_validation->run() == false) {
+            redirect('commerce/payment');
+        } else {
+            $country = $this->input->post('country');
+            $address1 = $this->input->post('address1');
+            $address2 = $this->input->post('address2');
+            $postal_code = $this->input->post('postal');
+
+            $this->db->set('country', $country);
+            $this->db->set('address1', $address1);
+            $this->db->set('address2', $address2);
+            $this->db->set('postal_code', $postal_code);
+            $this->db->where('id', $this->session->userdata('id'));
+            $this->db->update('user');
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Your address has been updated!</div>');
+            redirect('commerce/payment');
+        }
+    }
 }

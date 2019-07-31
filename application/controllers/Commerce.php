@@ -275,6 +275,7 @@ class Commerce extends CI_Controller
 
         $this->load->model('Commerce_model', 'commerce');
         $data['total_cart'] = $this->commerce->getTotalPrice($this->session->userdata('id'));
+        $data['cart'] = $this->commerce->getCartAndItemsbyId($this->session->userdata('id'));
         $data['countCart'] = $this->commerce->countCart($this->session->userdata('id'));
 
         if ($this->input->post('payment') == 2) {
