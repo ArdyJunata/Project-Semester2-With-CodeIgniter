@@ -19,7 +19,7 @@ class Commerce_model extends CI_Model
 
     public function getCartAndItemsbyId($id)
     {
-        $query = "SELECT *,(items.price*cart.quantity) as total_harga, items.price as price, cart.id as id_cart, cart.quantity as q from cart, items where cart.item_id = items.id and cart.user_id = $id";
+        $query = "SELECT *,(items.price*cart.quantity) as total_harga,items.id as id, items.price as price, cart.id as id_cart, cart.quantity as q from cart, items where cart.item_id = items.id and cart.user_id = $id";
         return $this->db->query($query)->result_array();
     }
 
@@ -66,6 +66,18 @@ class Commerce_model extends CI_Model
     public function getItemsByUserId($id)
     {
         $query = "SELECT * FROM items WHERE user_id = $id";
+        return $this->db->query($query)->result_array();
+    }
+
+    public function getOrderandPayment($id)
+    {
+        $query = "SELECT * FROM orders o, payment p where o.payment_id = p.payment_id and o.buyer_id = $id";
+        return $this->db->query($query)->result_array();
+    }
+
+    public function getItemsOrdered($id)
+    {
+        $query = "SELECT * FROM items_ordered o, items i WHERE o.item_id = i.id and o.buyer_id = $id";
         return $this->db->query($query)->result_array();
     }
 }

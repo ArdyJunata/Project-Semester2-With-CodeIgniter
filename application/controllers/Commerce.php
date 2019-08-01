@@ -294,4 +294,60 @@ class Commerce extends CI_Controller
             $this->load->view('templates/footer');
         }
     }
+
+    public function tfOrder()
+    {
+        $this->load->model('Commerce_model', 'commerce');
+        $data['total_cart'] = $this->commerce->getTotalPrice($this->session->userdata('id'));
+        $data = [
+            'payment_id' => $this->input->post('payment'),
+            'buyer_id' => $this->session->userdata('id'),
+            'total_price' => $data['total_cart']['total_price'],
+            'bank' => $this->input->post('bank'),
+            'date_order' => time(),
+            'note' => 'oke',
+            'status' => 'unpaid'
+        ];
+        $this->db->insert('orders', $data);
+        $order_id = $this->db->insert_id();
+
+        $data['cart'] = $this->commerce->getCartAndItemsbyId($this->session->userdata('id'));
+        $isi = array();
+        for ($i = 0; $i < count($this->commerce->getCartAndItemsbyId($this->session->userdata('id'))); $i++) {
+            $isi[$i] = array(
+                'order_id' => $order_id,
+                'item_id' => $data['cart'][$i]['id'],
+                'quantity' => $data['cart'][$i]['q'],
+                'buyer_id' => $this->session->userdata('id')
+            );
+        }
+        $this->db->insert_batch('items_ordered', $isi);
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">your order is successfull</div>');
+        redirect('commerce');
+    }
+
+    public function getOrders()
+    {
+        var_dump($this->db->get('orders')->result_array());
+    }
+
+    public function ordered()
+    {
+        $data['title'] = 'Ordered';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $this->load->model('Commerce_model', 'commerce');
+
+        $data['ordered'] = $this->commerce->getOrderandPayment($this->session->userdata('id'));
+        $data['cart'] = $this->commerce->getCartAndItemsbyId($this->session->userdata('id'));
+        $data['total_cart'] = $this->commerce->getTotalPrice($this->session->userdata('id'));
+        $data['countCart'] = $this->commerce->countCart($this->session->userdata('id'));
+        $data['itemOrdered'] = $this->commerce->getItemsOrdered($this->session->userdata('id'));
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('commerce/ordered.php', $data);
+        $this->load->view('templates/footer');
+    }
 }

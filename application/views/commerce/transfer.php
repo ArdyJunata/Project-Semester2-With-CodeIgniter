@@ -7,7 +7,7 @@
     <div class="row">
 
         <div class="col-lg-6">
-            <div class="alert alert-secondary" role="alert">
+            <div class="alert alert-info" role="alert">
                 Shipping Address
             </div>
             <form action="<?= base_url('user/editLocation') ?>" method="post">
@@ -39,13 +39,6 @@
                         <?= form_error('postal', '<small class="text-danger pl-3">', '</small>') ?>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="name" class="col-sm-3 col-form-label">Shipping Note</label>
-                    <div class="col-sm-7">
-                        <textarea class="form-control" name="note" id="note" cols="35" rows="6"></textarea>
-                        <?= form_error('note', '<small class="text-danger pl-3">', '</small>') ?>
-                    </div>
-                </div>
                 <div class="form-group row justify-content-end">
                     <div class="col-sm-9">
                         <button type="submit" class="btn btn-primary" name="Edit" id="Edit">Edit</button>
@@ -54,7 +47,7 @@
             </form>
         </div>
         <div class="col-lg-6">
-            <div class="alert alert-secondary" role="alert">
+            <div class="alert alert-info" role="alert">
                 Transfer Method
             </div>
             <div class="alert alert-secondary" role="alert">
@@ -103,23 +96,27 @@
                     </table>
                 </div>
             </div>
-            <div class="form-group row">
-                <label for="bank" class="col-sm-2 col-form-label">Bank</label>
-                <div class="col-sm-7">
-                    <select name="category_id" id="category_id" class="form-control">
-                        <option value="">Select Bank</option>
-                        <option value="BRI">BRI (Bank Rakyat Indonesia) </option>
-                        <option value="BCA">BCA (Bank Central Indonesia)</option>
-                        <option value="BNI">BNI (Bank Negeri Indonesia)</option>
-                        <option value="MANDIRI">Bank Mandiri</option>
-                        <option value="BSM">Bank Syariah Mandiri</option>
-                        <option value="BUKOPIN">Bank Bukopin</option>
-                    </select>
+            <form action="<?= base_url('commerce/tfOrder') ?>" method="post">
+                <input type="hidden" name="payment" id="payment" value="1">
+                <div class="form-group row">
+                    <label for="bank" class="col-sm-2 col-form-label">Bank</label>
+                    <div class="col-sm-7">
+                        <select name="bank" id="bank" class="form-control">
+                            <option value="">Select Bank</option>
+                            <option value="BRI">BRI (Bank Rakyat Indonesia) </option>
+                            <option value="BCA">BCA (Bank Central Indonesia)</option>
+                            <option value="BNI">BNI (Bank Negeri Indonesia)</option>
+                            <option value="MANDIRI">Bank Mandiri</option>
+                            <option value="BSM">Bank Syariah Mandiri</option>
+                            <option value="BUKOPIN">Bank Bukopin</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group row">
-                <button type="submit" class="btn btn-primary" name="save" id="save">Processed Payment</button>
-            </div>
+                <div class="form-group row">
+                    <button type="submit" class="btn btn-primary" name="save" id="save">Processed Payment</button>
+                </div>
+            </form>
+
         </div>
     </div>
 
