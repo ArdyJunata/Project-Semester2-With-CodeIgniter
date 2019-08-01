@@ -304,8 +304,8 @@ class Commerce extends CI_Controller
             'buyer_id' => $this->session->userdata('id'),
             'total_price' => $data['total_cart']['total_price'],
             'bank' => $this->input->post('bank'),
-            'date_order' => time(),
-            'note' => 'oke',
+            'date_order' => date('Y-m-d H:i:s'),
+            'due_date' => date('Y-m-d H:i:s', mktime(date('H'), date('i'), date('s'), date('m'), date('d') + 1, date('Y'))),
             'status' => 'unpaid'
         ];
         $this->db->insert('orders', $data);
@@ -326,9 +326,23 @@ class Commerce extends CI_Controller
         redirect('commerce');
     }
 
-    public function getOrders()
+    public function itemOrder($id)
     {
-        var_dump($this->db->get('orders')->result_array());
+        $data['title'] = 'Details Order';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $this->load->model('Commerce_model', 'commerce');
+
+        $data['cart'] = $this->commerce->getCartAndItemsbyId($this->session->userdata('id'));
+        $data['total_cart'] = $this->commerce->getTotalPrice($this->session->userdata('id'));
+        $data['countCart'] = $this->commerce->countCart($this->session->userdata('id'));
+        $data['itemOrdered'] = $this->commerce->getItemsOrdered($id);
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('commerce/detailOrder.php', $data);
+        $this->load->view('templates/footer');
     }
 
     public function ordered()
@@ -349,5 +363,23 @@ class Commerce extends CI_Controller
         $this->load->view('templates/topbar', $data);
         $this->load->view('commerce/ordered.php', $data);
         $this->load->view('templates/footer');
+    }
+
+    public function confirmTf($id)
+    {
+        $this->db->set('status', 'paid');
+        $this->db->where('order_id', $id);
+        $this->db->update('orders');
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Thanks For Transfer!</div>');
+        redirect('commerce/ordered');
+    }
+
+    public function cancelTf($id)
+    {
+        $this->db->set('status', 'canceled');
+        $this->db->where('order_id', $id);
+        $this->db->update('orders');
+        $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Your order have been canceled</div>');
+        redirect('commerce/ordered');
     }
 }

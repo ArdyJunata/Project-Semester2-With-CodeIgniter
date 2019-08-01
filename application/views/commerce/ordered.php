@@ -12,6 +12,7 @@
                     <th>Payment</th>
                     <th>Bank</th>
                     <th>Date</th>
+                    <th>Due Date</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -22,9 +23,10 @@
                         <td><?= $a ?></td>
                         <td><?= $i['name']; ?></td>
                         <td><?= $i['bank'];  ?></td>
-                        <td><?= date(' d F Y', $i['date_order']); ?></td>
+                        <td><?= $i['date_order'] ?></td>
+                        <td><?= $i['due_date'] ?></td>
                         <td><?= $i['status'] ?></td>
-                        <td><a href="#" class="btn-sm btn-primary">detail</a></td>
+                        <td><a href="<?= base_url('commerce/itemOrder/') . $i['order_id'] ?>" class="btn-sm btn-primary">detail</a></td>
                     </tr>
 
                     <?php $a++;

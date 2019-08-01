@@ -77,7 +77,7 @@ class Commerce_model extends CI_Model
 
     public function getItemsOrdered($id)
     {
-        $query = "SELECT * FROM items_ordered o, items i WHERE o.item_id = i.id and o.buyer_id = $id";
+        $query = "SELECT *,i.image as image, i.name as name FROM items_ordered o, items i, orders p WHERE o.item_id = i.id and o.order_id = p.order_id and o.order_id = $id";
         return $this->db->query($query)->result_array();
     }
 }
