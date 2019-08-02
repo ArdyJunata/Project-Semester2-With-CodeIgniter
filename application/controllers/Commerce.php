@@ -107,15 +107,21 @@ class Commerce extends CI_Controller
     public function updateCart($id)
     {
         $this->load->model('Commerce_model', 'commerce');
-        if ($this->input->post('quantity', true) == 0) {
-            $this->deleteCart($id);
+        $data['item'] = $this->db->get_where('items', ['id' => $this->input->post('id', true)])->row_array();
+        if ($data['item']['quantity'] >= $this->input->post('quantity', true)) {
+            if ($this->input->post('quantity', true) == 0) {
+                $this->deleteCart($id);
+            } else {
+                $total = ($this->input->post('quantity', true) * $this->input->post('price', true));
+                $this->db->set('quantity', $this->input->post('quantity', true));
+                $this->db->set('total_price', $total);
+                $this->db->where('id', $id);
+                $this->db->update('cart');
+                $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">update cart success</div>');
+                redirect('commerce/cart');
+            }
         } else {
-            $total = ($this->input->post('quantity', true) * $this->input->post('price', true));
-            $this->db->set('quantity', $this->input->post('quantity', true));
-            $this->db->set('total_price', $total);
-            $this->db->where('id', $id);
-            $this->db->update('cart');
-            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">update cart success</div>');
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Out of stock limit!</div>');
             redirect('commerce/cart');
         }
     }
@@ -298,6 +304,7 @@ class Commerce extends CI_Controller
     public function tfOrder()
     {
         $this->load->model('Commerce_model', 'commerce');
+
         $data['total_cart'] = $this->commerce->getTotalPrice($this->session->userdata('id'));
         $data = [
             'payment_id' => $this->input->post('payment'),
@@ -310,7 +317,6 @@ class Commerce extends CI_Controller
         ];
         $this->db->insert('orders', $data);
         $order_id = $this->db->insert_id();
-
         $data['cart'] = $this->commerce->getCartAndItemsbyId($this->session->userdata('id'));
         $isi = array();
         for ($i = 0; $i < count($this->commerce->getCartAndItemsbyId($this->session->userdata('id'))); $i++) {
@@ -320,10 +326,15 @@ class Commerce extends CI_Controller
                 'quantity' => $data['cart'][$i]['q'],
                 'buyer_id' => $this->session->userdata('id')
             );
+            $data['items'] = $this->db->get_where('items', ['id' => $data['cart'][$i]['id']])->row_array();
+            $sisa = $data['items']['quantity'] - $data['cart'][$i]['q'];
+            $this->db->set('quantity', $sisa);
+            $this->db->where('id', $data['cart'][$i]['id']);
+            $this->db->update('items');
         }
         $this->db->insert_batch('items_ordered', $isi);
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">your order is successfull</div>');
-        redirect('commerce');
+        redirect('commerce/ordered');
     }
 
     public function itemOrder($id)

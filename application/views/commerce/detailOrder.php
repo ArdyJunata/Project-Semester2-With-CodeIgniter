@@ -33,7 +33,7 @@
                 endforeach; ?>
                 <tr>
                     <td colspan="1"></td>
-                    <td><a href="<?= base_url('commerce') ?>" class="btn-sm btn-warning"><i class="fa fa-angle-left"></i> Back</a></td>
+                    <td><a href="<?= base_url('commerce/ordered') ?>" class="btn-sm btn-warning"><i class="fa fa-angle-left"></i> Back</a></td>
                     <td colspan="1"></td>
                     <td>
                         <?php
