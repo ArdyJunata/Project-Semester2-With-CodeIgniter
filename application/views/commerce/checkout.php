@@ -3,10 +3,10 @@
 
     <!-- Page Heading -->
     <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>
-
     <!--================Order Details Area =================-->
     <section class="order_details section_gap">
         <div class="container">
+            <?= $this->session->flashdata('message'); ?>
             <div class="jumbotron">
                 <div class="order_details_table">
                     <h2>Order Details</h2>

@@ -333,6 +333,8 @@ class Commerce extends CI_Controller
             $this->db->update('items');
         }
         $this->db->insert_batch('items_ordered', $isi);
+        $this->db->where('user_id', $this->session->userdata('id'));
+        $this->db->delete('cart');
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">your order is successfull</div>');
         redirect('commerce/ordered');
     }
@@ -392,5 +394,90 @@ class Commerce extends CI_Controller
         $this->db->update('orders');
         $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Your order have been canceled</div>');
         redirect('commerce/ordered');
+    }
+
+    public function confirmationCod()
+    {
+        $data['title'] = 'Confirmation';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $this->load->model('Commerce_model', 'commerce');
+
+        $data['ordered'] = $this->commerce->getOrderandPayment($this->session->userdata('id'));
+        $data['cart'] = $this->commerce->getCartAndItemsbyId($this->session->userdata('id'));
+        $data['total_cart'] = $this->commerce->getTotalPrice($this->session->userdata('id'));
+        $data['countCart'] = $this->commerce->countCart($this->session->userdata('id'));
+        $data['itemOrdered'] = $this->commerce->getItemsOrdered($this->session->userdata('id'));
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('commerce/confirmationCod.php', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function codOrder()
+    {
+        $this->load->model('Commerce_model', 'commerce');
+
+        $data['total_cart'] = $this->commerce->getTotalPrice($this->session->userdata('id'));
+        $data = [
+            'payment_id' => 2,
+            'buyer_id' => $this->session->userdata('id'),
+            'total_price' => $data['total_cart']['total_price'],
+            'bank' => "-",
+            'date_order' => date('Y-m-d H:i:s'),
+            'due_date' => date('Y-m-d H:i:s', mktime(date('H'), date('i'), date('s'), date('m'), date('d') + 1, date('Y'))),
+            'status' => 'unpaid'
+        ];
+        $this->db->insert('orders', $data);
+        $order_id = $this->db->insert_id();
+        $data['cart'] = $this->commerce->getCartAndItemsbyId($this->session->userdata('id'));
+        $isi = array();
+        for ($i = 0; $i < count($this->commerce->getCartAndItemsbyId($this->session->userdata('id'))); $i++) {
+            $isi[$i] = array(
+                'order_id' => $order_id,
+                'item_id' => $data['cart'][$i]['id'],
+                'quantity' => $data['cart'][$i]['q'],
+                'buyer_id' => $this->session->userdata('id')
+            );
+            $data['items'] = $this->db->get_where('items', ['id' => $data['cart'][$i]['id']])->row_array();
+            $sisa = $data['items']['quantity'] - $data['cart'][$i]['q'];
+            $this->db->set('quantity', $sisa);
+            $this->db->where('id', $data['cart'][$i]['id']);
+            $this->db->update('items');
+        }
+        $this->db->insert_batch('items_ordered', $isi);
+        $this->db->where('user_id', $this->session->userdata('id'));
+        $this->db->delete('cart');
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">your order is successfull</div>');
+        redirect('commerce/confirmationCod');
+    }
+
+    public function refund($id)
+    {
+        $this->load->model('Commerce_model', 'commerce');
+        $data['itemOrdered'] = $this->commerce->getItemsOrdered($id);
+        if ($data['itemOrdered'][0]['status'] == 'unpaid') {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">you havent pay yet the order!</div>');
+            redirect('commerce/ordered');
+        } elseif ($data['itemOrdered'][0]['status'] == 'canceled') {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">you have cancelled your order</div>');
+            redirect('commerce/ordered');
+        } elseif ($data['itemOrdered'][0]['status'] == 'paid') {
+            $data = [
+                'order_id' => $id,
+                'buyer_id' => $this->session->userdata('id')
+            ];
+            $this->db->insert('refund', $data);
+            $this->db->set('status', 'refund process');
+            $this->db->where('order_id', $id);
+            $this->db->update('orders');
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">your request being processed</div>');
+            redirect('commerce/ordered');
+        } else {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">something wrong!</div>');
+            redirect('commerce/ordered');
+        }
     }
 }

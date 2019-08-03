@@ -72,8 +72,9 @@ class User extends CI_Controller
     public function editLocation()
     {
         $this->form_validation->set_rules('country', 'country', 'required|trim');
+        $this->form_validation->set_rules('province', 'province', 'required|trim');
+        $this->form_validation->set_rules('city', 'city', 'required|trim');
         $this->form_validation->set_rules('address1', 'address1', 'required|trim');
-        $this->form_validation->set_rules('address2', 'address2', 'required|trim');
         $this->form_validation->set_rules('postal', 'postal', 'required|trim');
 
         if ($this->form_validation->run() == false) {
@@ -81,12 +82,14 @@ class User extends CI_Controller
         } else {
             $country = $this->input->post('country');
             $address1 = $this->input->post('address1');
-            $address2 = $this->input->post('address2');
+            $province = $this->input->post('province');
+            $city = $this->input->post('city');
             $postal_code = $this->input->post('postal');
 
             $this->db->set('country', $country);
             $this->db->set('address1', $address1);
-            $this->db->set('address2', $address2);
+            $this->db->set('province', $province);
+            $this->db->set('city', $city);
             $this->db->set('postal_code', $postal_code);
             $this->db->where('id', $this->session->userdata('id'));
             $this->db->update('user');

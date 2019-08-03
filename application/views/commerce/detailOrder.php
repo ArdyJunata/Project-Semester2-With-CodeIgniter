@@ -37,7 +37,6 @@
                     <td colspan="1"></td>
                     <td>
                         <?php
-
                         if ($itemOrdered[0]['status'] == 'canceled') { } else if ($itemOrdered[0]['status'] == 'unpaid') {
                             ?>
                             <a href="<?= base_url('commerce/cancelTf/') . $itemOrdered[0]['order_id']; ?>" class="btn-sm btn-danger">Cancel Order</a>

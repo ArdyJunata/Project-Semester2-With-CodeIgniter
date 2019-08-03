@@ -19,16 +19,23 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="name" class="col-sm-3 col-form-label">Address 1</label>
+                    <label for="name" class="col-sm-3 col-form-label">Province</label>
                     <div class="col-sm-7">
-                        <input type="text" class="form-control" value="<?= $user['address1']; ?>" id="address1" name="address1">
+                        <input type="text" class="form-control" value="<?= $user['province']; ?>" id="province" name="province">
                         <?= form_error('address1', '<small class="text-danger pl-3">', '</small>') ?>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="name" class="col-sm-3 col-form-label">Addess 2</label>
+                    <label for="name" class="col-sm-3 col-form-label">City</label>
                     <div class="col-sm-7">
-                        <input type="text" class="form-control" value="<?= $user['address2']; ?>" id="address2" name="address2">
+                        <input type="text" class="form-control" value="<?= $user['city']; ?>" id="city" name="city">
+                        <?= form_error('address1', '<small class="text-danger pl-3">', '</small>') ?>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="name" class="col-sm-3 col-form-label">Addess</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" value="<?= $user['address1']; ?>" id="address1" name="address1">
                         <?= form_error('address2', '<small class="text-danger pl-3">', '</small>') ?>
                     </div>
                 </div>

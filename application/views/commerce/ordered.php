@@ -26,7 +26,10 @@
                         <td><?= $i['date_order'] ?></td>
                         <td><?= $i['due_date'] ?></td>
                         <td><?= $i['status'] ?></td>
-                        <td><a href="<?= base_url('commerce/itemOrder/') . $i['order_id'] ?>" class="btn-sm btn-primary">detail</a></td>
+                        <td>
+                            <a href="<?= base_url('commerce/itemOrder/') . $i['order_id'] ?>" class="btn-sm btn-primary">detail</a>
+                            <a href="<?= base_url('commerce/refund/') . $i['order_id'] ?>" class="btn-sm btn-danger">refund</a>
+                        </td>
                     </tr>
 
                     <?php $a++;

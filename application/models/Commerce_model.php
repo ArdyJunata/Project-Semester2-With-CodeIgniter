@@ -80,4 +80,10 @@ class Commerce_model extends CI_Model
         $query = "SELECT *,i.image as image, i.name as name FROM items_ordered o, items i, orders p WHERE o.item_id = i.id and o.order_id = p.order_id and o.order_id = $id";
         return $this->db->query($query)->result_array();
     }
+
+    public function deleteCartbyId($id)
+    {
+        $query = "DELETE FROM cart where user_id = $id";
+        return $this->db->query($query)->num_rows();
+    }
 }
