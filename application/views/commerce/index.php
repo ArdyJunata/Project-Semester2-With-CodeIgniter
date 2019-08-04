@@ -33,8 +33,8 @@
                         <?php
                         }
                         ?>
-                        <a href="" class="btn-sm btn-dark mb-2"><i class="fas fa-info-circle"></i> Detail</a>
-                        <a href="<?= base_url('commerce/addCart/') . $t['id'] ?>" class="btn-sm btn-dark"><i class="fas fa-fw fa-shopping-cart"></i> Add to cart</a>
+                        <a href="<?= base_url('commerce/detailItems/') . $t['id'] ?>" class="btn-sm btn-primary mb-2"><i class="fas fa-info-circle"></i> Detail</a>
+                        <a href="<?= base_url('commerce/addCart/') . $t['id'] ?>" class="btn-sm btn-primary"><i class="fas fa-fw fa-shopping-cart"></i> Add to cart</a>
                     </div>
                 </div>
             </div>

@@ -25,9 +25,9 @@ class Auth extends CI_Controller
             $cb = "http://localhost/Cilogin/index.php/auth/callback";
             $url = $this->fb->getLoginUrl($cb);
             $datas = array('url' => $url);
-            $this->load->view('templates/auth_header', $data);
-            $this->load->view('auth/login', $datas);
-            $this->load->view('templates/auth_footer');
+            $this->load->view('templates/login_header', $data);
+            $this->load->view('auth/index1', $datas);
+            $this->load->view('templates/login_footer');
         } else {
             //validasinya success
             $this->_login();
@@ -91,9 +91,9 @@ class Auth extends CI_Controller
 
         if ($this->form_validation->run() == false) {
             $data['title'] = 'Registration Page';
-            $this->load->view('templates/auth_header', $data);
-            $this->load->view('auth/registration');
-            $this->load->view('templates/auth_footer');
+            $this->load->view('templates/login_header', $data);
+            $this->load->view('auth/registration1');
+            $this->load->view('templates/login_footer');
         } else {
             $data = [
                 'name' => htmlspecialchars($this->input->post('name', true)),

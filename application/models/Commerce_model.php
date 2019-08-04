@@ -86,4 +86,10 @@ class Commerce_model extends CI_Model
         $query = "DELETE FROM cart where user_id = $id";
         return $this->db->query($query)->num_rows();
     }
+
+    public function getItemsById($item_id, $user_id)
+    {
+        $query = "SELECT *,i.id as item_id, c.name as category_name, u.name as username, i.image as item_image FROM items i, user u, categories c WHERE i.id = $item_id and i.category_id = c.id and u.id = i.user_id";
+        return $this->db->query($query)->row_array();
+    }
 }

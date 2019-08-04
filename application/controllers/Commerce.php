@@ -50,6 +50,22 @@ class Commerce extends CI_Controller
         $this->load->view('commerce/category.php', $data);
         $this->load->view('templates/footer');
     }
+
+    public function detailItems($item_id)
+    {
+        $data['title'] = 'Detail Item';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $this->load->model('Commerce_model', 'commerce');
+
+        $data['categories'] = $this->db->get('categories')->result_array();
+        $data['countCart'] = $this->commerce->countCart($this->session->userdata('id'));
+        $data['items'] = $this->commerce->getItemsById($item_id, $this->session->userdata('id'));
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('commerce/detailItems.php', $data);
+        $this->load->view('templates/footer');
+    }
     // END ITEM
 
     // CART
@@ -475,9 +491,33 @@ class Commerce extends CI_Controller
             $this->db->update('orders');
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">your request being processed</div>');
             redirect('commerce/ordered');
+        } elseif ($data['itemOrdered'][0]['status'] == 'refund process') {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">your refund request being processed</div>');
+            redirect('commerce/ordered');
         } else {
             $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">something wrong!</div>');
             redirect('commerce/ordered');
         }
+    }
+
+    public function rating()
+    {
+        if ($this->db->get_where('rating', array('user_id' => $_POST['user_id']))->num_rows() > 0) {
+            $this->db->set('ratedIndex', $_POST['ratedIndex']);
+            $this->db->where('user_id', $_POST['user_id']);
+            $this->db->update('rating');
+        } else {
+            $data = array(
+                'ratedIndex' => $_POST['ratedIndex'],
+                'user_id' => $_POST['user_id']
+            );
+            $this->db->insert('rating', $data);
+        }
+    }
+
+    public function getRating()
+    {
+        $data['ranked'] = $this->db->get_where('rating', array('user_id' => $_POST['user_id']))->row_array();
+        echo json_encode($data['ranked']);
     }
 }
