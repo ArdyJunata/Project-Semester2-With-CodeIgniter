@@ -37,18 +37,31 @@
                     <td colspan="1"></td>
                     <td>
                         <?php
-                        if ($itemOrdered[0]['status'] == 'canceled') { } else if ($itemOrdered[0]['status'] == 'unpaid') {
-                            ?>
-                            <a href="<?= base_url('commerce/cancelTf/') . $itemOrdered[0]['order_id']; ?>" class="btn-sm btn-danger">Cancel Order</a>
-                            <a href="<?= base_url('commerce/confirmTf/') . $itemOrdered[0]['order_id']; ?>" class="btn-sm btn-primary">Confirm Transfer</a>
-                        <?php
-                        } else if ($itemOrdered[0]['status'] == 'paid') {
-                            ?>
-                            <a href="<?= base_url('commerce/cancelTf/') . $itemOrdered[0]['order_id']; ?>" class="btn-sm btn-danger">Cancel Order</a>
-                        <?php
+                        if ($itemOrdered[0]['payment_id'] == 1) {
+                            if ($itemOrdered[0]['status'] == 'canceled') { } else if ($itemOrdered[0]['status'] == 'unpaid') {
+                                ?>
+                                <a href="<?= base_url('commerce/cancelTf/') . $itemOrdered[0]['order_id']; ?>" class="btn-sm btn-danger">Cancel Order</a>
+                                <a href="<?= base_url('commerce/confirmTf/') . $itemOrdered[0]['order_id']; ?>" class="btn-sm btn-primary">Confirm Transfer</a>
+                            <?php
+                            } else if ($itemOrdered[0]['status'] == 'paid') {
+                                ?>
+                                <a href="<?= base_url('commerce/cancelTf/') . $itemOrdered[0]['order_id']; ?>" class="btn-sm btn-danger">Cancel Order</a>
+                            <?php
 
+                            }
+                        } else {
+                            if ($itemOrdered[0]['status'] == 'canceled') { } else if ($itemOrdered[0]['status'] == 'unpaid') {
+                                ?>
+                            <?php
+                            } else if ($itemOrdered[0]['status'] == 'refund process') {
+                                ?>
+
+                            <?php
+
+                            }
                         }
                         ?>
+
 
                     </td>
                     <td>Total</td>

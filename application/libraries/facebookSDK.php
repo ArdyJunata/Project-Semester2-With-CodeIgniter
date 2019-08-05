@@ -18,8 +18,8 @@ class FacebookSDK
     {
 
         $this->fb = new Facebook\Facebook([
-            'app_id' => '704130590089623',
-            'app_secret' => 'af99ac6714f8499815a0523f26563134',
+            'app_id' => '2119322495027503',
+            'app_secret' => '3dca18d8e5b4c12f904ebe1b36746153',
             'default_graph_version' => 'v2.5',
         ]);
         $this->helper = $this->fb->getRedirectLoginHelper();

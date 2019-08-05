@@ -15,19 +15,19 @@ $user_id = $this->session->userdata('id');
                 </div>
                 <div class="col-lg-4">
                     <div class="s_product_text">
-                        <h3><?= $items['name'] ?></h3>
+                        <h2 style="color: black;"><?= $items['name'] ?></h2>
                         <h4><?= $rupiah = "Rp " . number_format($items['price'], 2, ',', '.'); ?></h4>
                         <ul class="list-unstyled">
                             <li><span>Category</span> : <?= $items['category_name'] ?><span></li>
                             <li><span>Availibility</span> : <?= $items['quantity'] ?><span></li>
                             <li><span>Seller</span> : <?= $items['username'] ?><span></li>
                         </ul>
-                        <span>My Rate : </span>
+                        <!-- <span>My Rate : </span>
                         <i class="fa fa-star" style="color: black" data-id="<?= $user_id; ?>" data-index="0"></i>
                         <i class="fa fa-star" style="color: black" data-id="<?= $user_id; ?>" data-index="1"></i>
                         <i class="fa fa-star" style="color: black" data-id="<?= $user_id; ?>" data-index="2"></i>
                         <i class="fa fa-star" style="color: black" data-id="<?= $user_id; ?>" data-index="3"></i>
-                        <i class="fa fa-star" style="color: black" data-id="<?= $user_id; ?>" data-index="4"></i>
+                        <i class="fa fa-star" style="color: black" data-id="<?= $user_id; ?>" data-index="4"></i> -->
                         <p>Mill Oil is an innovative oil filled radiator with the most modern technology. If you are looking for
                             something that can make your interior look awesome, and at the same time give you the pleasant warm feeling
                             during the winter.</p>
