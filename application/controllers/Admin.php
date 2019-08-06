@@ -61,4 +61,55 @@ class Admin extends CI_Controller
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Congratulation! your account has been created.</div>');
         redirect('admin/userActive');
     }
+
+    public function report()
+    {
+        $data['title'] = 'Report List';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $this->load->model('Admin_models', 'admin');
+        $data['report'] = $this->admin->getReport();
+        $data['reported'] = $this->admin->getReported();
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('admin/report', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function accept($id)
+    {
+        $this->db->set('status', 'accepted');
+        $this->db->where('id', $id);
+        $this->db->update('report');
+        redirect("admin/setDenda/" . $id);
+    }
+
+    public function deny($id)
+    {
+        $this->db->set('status', 'deny');
+        $this->db->where('id', $id);
+        $this->db->update('report');
+        redirect("admin/report");
+    }
+
+    public function setDenda($id)
+    {
+        if ($this->input->post('denda')) {
+            $this->db->set('denda', $this->input->post('denda'));
+            $this->db->where('id', $id);
+            $this->db->update('report');
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Fine have been updated!</div>');
+            redirect('admin/report');
+        } else {
+            $data['title'] = 'Set Denda';
+            $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+            $data['id'] = $id;
+            $this->load->model('Admin_models', 'admin');
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('admin/setDenda', $data);
+            $this->load->view('templates/footer');
+        }
+    }
 }

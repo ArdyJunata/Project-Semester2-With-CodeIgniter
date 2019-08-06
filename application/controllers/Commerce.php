@@ -520,4 +520,30 @@ class Commerce extends CI_Controller
         $data['ranked'] = $this->db->get_where('rating', array('user_id' => $_POST['user_id']))->row_array();
         echo json_encode($data['ranked']);
     }
+
+    public function detailSeller($user_id)
+    {
+        $data['title'] = 'Seller Profile';
+        $data['user'] = $this->db->get_where('user', ['id' => $user_id])->row_array();
+        $this->load->model('Commerce_model', 'commerce');
+        $data['countCart'] = $this->commerce->countCart($this->session->userdata('id'));
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('commerce/detailSeller', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function report($seller_id)
+    {
+        $data = [
+            'seller_id' => $seller_id,
+            'buyer_id' => $this->session->userdata('id'),
+            'deskripsi' => $this->input->post('deskripsi'),
+            'status' => 'process'
+        ];
+        $this->db->insert('report', $data);
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">your report being processed</div>');
+        redirect('commerce/index');
+    }
 }

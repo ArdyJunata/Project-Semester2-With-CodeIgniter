@@ -20,14 +20,14 @@ $user_id = $this->session->userdata('id');
                         <ul class="list-unstyled">
                             <li><span>Category</span> : <?= $items['category_name'] ?><span></li>
                             <li><span>Availibility</span> : <?= $items['quantity'] ?><span></li>
-                            <li><span>Seller</span> : <?= $items['username'] ?><span></li>
+                            <li><span>Seller</span> : <a href="<?= base_url('commerce/detailSeller/') . $items['user_id'] ?>"><?= $items['username'] ?><span></li></a>
+                            <label for="input-2" class="control-label">Rate This : </label>
+                            <i class="fa fa-star" style="color: black" data-id="<?= $user_id; ?>" data-index="0"></i>
+                            <i class="fa fa-star" style="color: black" data-id="<?= $user_id; ?>" data-index="1"></i>
+                            <i class="fa fa-star" style="color: black" data-id="<?= $user_id; ?>" data-index="2"></i>
+                            <i class="fa fa-star" style="color: black" data-id="<?= $user_id; ?>" data-index="3"></i>
+                            <i class="fa fa-star" style="color: black" data-id="<?= $user_id; ?>" data-index="4"></i>
                         </ul>
-                        <!-- <span>My Rate : </span>
-                        <i class="fa fa-star" style="color: black" data-id="<?= $user_id; ?>" data-index="0"></i>
-                        <i class="fa fa-star" style="color: black" data-id="<?= $user_id; ?>" data-index="1"></i>
-                        <i class="fa fa-star" style="color: black" data-id="<?= $user_id; ?>" data-index="2"></i>
-                        <i class="fa fa-star" style="color: black" data-id="<?= $user_id; ?>" data-index="3"></i>
-                        <i class="fa fa-star" style="color: black" data-id="<?= $user_id; ?>" data-index="4"></i> -->
                         <p>Mill Oil is an innovative oil filled radiator with the most modern technology. If you are looking for
                             something that can make your interior look awesome, and at the same time give you the pleasant warm feeling
                             during the winter.</p>
@@ -94,7 +94,7 @@ $user_id = $this->session->userdata('id');
     function setStars(max) {
         for (var i = 0; i <= max; i++)
             $('.fa-star:eq(' + i + ')').css('color',
-                'red');
+                '#4E73DF');
     }
 
     function resetStarColors() {
